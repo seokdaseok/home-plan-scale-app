@@ -1,7 +1,9 @@
 {
-  "rewrites": [
-    { "source": "/api/furniture-catalog", "destination": "/api/furniture-catalog.js" },
-    { "source": "/app", "destination": "/public/index.html" },
-    { "source": "/", "destination": "/public/landing.html" }
+  "version": 2,
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "server.js" }
   ]
 }

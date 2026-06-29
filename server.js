@@ -39,8 +39,10 @@ app.get('/api/furniture-catalog', (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ── Start ──────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n  Plan/Scale running at http://localhost:${PORT}`);
-  console.log(`  Landing: http://localhost:${PORT}/`);
-  console.log(`  App:     http://localhost:${PORT}/app\n`);
-});
+// app.listen(PORT, () => {
+//   console.log(`\n  Plan/Scale running at http://localhost:${PORT}`);
+//   console.log(`  Landing: http://localhost:${PORT}/`);
+//   console.log(`  App:     http://localhost:${PORT}/app\n`);
+// });
+
+module.exports = app;
