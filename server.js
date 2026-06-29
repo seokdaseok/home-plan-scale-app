@@ -45,4 +45,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   console.log(`  App:     http://localhost:${PORT}/app\n`);
 // });
 
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n  Plan/Scale running at http://localhost:${PORT}`);
+    console.log(`  Landing: http://localhost:${PORT}/`);
+    console.log(`  App:     http://localhost:${PORT}/app\n`);
+  });
+}
+
 module.exports = app;
