@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Plan/Scale floor plan designer \u2014 local dev server",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
