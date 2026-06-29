@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan/Scale — Floor Plan & Furniture Planner</title>
+<meta name="description" content="Plan your room, size your furniture, and buy with confidence — in under 30 minutes. A free floor planning tool with a real furniture catalogue.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B2A41'/><path d='M6 17L16 8L26 17V25H6V17Z' fill='none' stroke='%23FAF8F2' stroke-width='2' stroke-linejoin='round'/><path d='M13 25V19H19V25' fill='none' stroke='%23C9622A' stroke-width='2' stroke-linejoin='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="landing.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+        <path d="M2 11L11 3L20 11V19H2V11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M8 19V12H14V19" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">PLAN<span class="brand-slash">/</span>SCALE</span>
+    </div>
+    <a href="/app" class="nav-cta">Open App →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Free floor planning tool</div>
+    <h1 class="hero-headline">
+      Plan, Furnish,<br>
+      and Purchase<span class="hero-accent">.</span><br>
+      <span class="hero-sub">In under 30 minutes<span class="cursor">_</span></span>
+    </h1>
+    <p class="hero-body">
+      Upload your floor plan, drop in furniture at real sizes, browse a catalogue of actual products — and know exactly what to buy before you spend a penny.
+    </p>
+    <div class="hero-actions">
+      <a href="/app" class="btn-primary-large">Start Planning — It's Free</a>
+      <span class="hero-hint">No account. No download. Works in your browser.</span>
+    </div>
+
+    <!-- Hero canvas illustration -->
+    <div class="hero-canvas-wrap" style="padding-bottom: 0;">
+      <div class="hero-canvas">
+        <div class="canvas-toolbar-mock">
+          <div class="mock-tool active">Select</div>
+          <div class="mock-tool">Draw Room</div>
+          <div class="mock-sep"></div>
+          <div class="mock-tool">Rotate 90°</div>
+          <div class="mock-tool">Duplicate</div>
+          <div class="mock-zoom">
+            <span>−</span><span class="mock-zoom-level">100%</span><span>+</span>
+          </div>
+        </div>
+        <div class="canvas-body">
+          <!-- SVG floor plan illustration — connected apartment layout -->
+          <svg class="canvas-svg" viewBox="0 0 580 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+                <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(139,131,120,0.13)" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="580" height="360" fill="#FAF8F2"/>
+            <rect width="580" height="360" fill="url(#grid)"/>
+
+            <!-- ── APARTMENT OUTLINE (thick outer wall) ── -->
+            <rect x="28" y="24" width="524" height="312" fill="none" stroke="#1B2A41" stroke-width="3" rx="1"/>
+
+            <!-- ── INTERNAL WALLS ── -->
+            <!-- Vertical wall: living/bedroom | kitchen/dining -->
+            <line x1="220" y1="24" x2="220" y2="336" stroke="#1B2A41" stroke-width="2"/>
+            <!-- Horizontal wall: living | bedroom (top section divider) -->
+            <line x1="220" y1="168" x2="552" y2="168" stroke="#1B2A41" stroke-width="2"/>
+            <!-- Hallway vertical: right of kitchen -->
+            <line x1="340" y1="168" x2="340" y2="336" stroke="#1B2A41" stroke-width="2"/>
+
+            <!-- ── DOORS (arc indicators) ── -->
+            <!-- Living room door -->
+            <path d="M 220 290 Q 248 290 248 262" stroke="#1B2A41" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+            <line x1="220" y1="290" x2="220" y2="262" stroke="#1B2A41" stroke-width="1.2"/>
+            <!-- Bedroom door -->
+            <path d="M 340 80 Q 368 80 368 52" stroke="#1B2A41" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+            <line x1="340" y1="80" x2="340" y2="52" stroke="#1B2A41" stroke-width="1.2"/>
+            <!-- Bathroom door -->
+            <path d="M 460 168 Q 460 196 432 196" stroke="#1B2A41" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+            <line x1="460" y1="168" x2="432" y2="168" stroke="#1B2A41" stroke-width="1.2"/>
+
+            <!-- ── LIVING ROOM (top-left, large) ── -->
+            <rect x="28" y="24" width="192" height="312" fill="rgba(92,122,107,0.09)"/>
+            <text x="124" y="48" text-anchor="middle" font-family="Inter" font-size="10" font-weight="700" fill="#3D4F66">Living Room</text>
+            <text x="124" y="61" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8B8378">6.0 × 9.8m</text>
+
+            <!-- Sofa (L-shape against left wall) -->
+            <rect x="38" y="80" width="120" height="42" rx="3" fill="rgba(201,98,42,0.85)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <rect x="38" y="80" width="42" height="80" rx="3" fill="rgba(201,98,42,0.85)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <text x="108" y="105" text-anchor="middle" font-family="Inter" font-size="7.5" font-weight="600" fill="#FAF8F2">FRIHETEN</text>
+            <text x="108" y="116" text-anchor="middle" font-family="Inter" font-size="7" fill="rgba(250,248,242,0.8)">Corner Sofa</text>
+
+            <!-- Coffee table -->
+            <rect x="90" y="140" width="70" height="44" rx="3" fill="rgba(166,118,63,0.78)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <text x="125" y="166" text-anchor="middle" font-family="Inter" font-size="7.5" font-weight="600" fill="#FAF8F2">Coffee Table</text>
+
+            <!-- TV unit along bottom -->
+            <rect x="38" y="290" width="160" height="22" rx="2" fill="rgba(107,98,89,0.75)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <text x="118" y="305" text-anchor="middle" font-family="Inter" font-size="7" font-weight="600" fill="#FAF8F2">BESTÅ TV Unit</text>
+
+            <!-- Armchair -->
+            <rect x="152" y="140" width="44" height="44" rx="3" fill="rgba(139,94,131,0.75)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <text x="174" y="165" text-anchor="middle" font-family="Inter" font-size="7" font-weight="600" fill="#FAF8F2">Chair</text>
+
+            <!-- Selection on sofa -->
+            <rect x="36" y="78" width="124" height="84" rx="3" fill="none" stroke="#1B2A41" stroke-width="2"/>
+            <line x1="98" y1="78" x2="98" y2="64" stroke="#1B2A41" stroke-width="1.5"/>
+            <circle cx="98" cy="60" r="5" fill="#1B2A41"/>
+
+            <!-- ── BEDROOM (top-right) ── -->
+            <rect x="220" y="24" width="332" height="144" fill="rgba(74,111,165,0.09)"/>
+            <text x="386" y="44" text-anchor="middle" font-family="Inter" font-size="10" font-weight="700" fill="#3D4F66">Bedroom</text>
+            <text x="386" y="57" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8B8378">4.2 × 10.4m</text>
+
+            <!-- Bed (centred) -->
+            <rect x="248" y="52" width="76" height="104" rx="3" fill="rgba(74,111,165,0.78)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <rect x="248" y="52" width="76" height="22" rx="3" fill="rgba(74,111,165,0.95)" stroke="rgba(27,42,65,0.35)" stroke-width="1"/>
+            <text x="286" y="110" text-anchor="middle" font-family="Inter" font-size="7.5" font-weight="600" fill="#FAF8F2">MALM</text>
+            <text x="286" y="121" text-anchor="middle" font-family="Inter" font-size="7" fill="rgba(250,248,242,0.8)">Queen Bed</text>
+            <!-- Nightstands -->
+            <rect x="232" y="68" width="16" height="24" rx="2" fill="rgba(166,118,63,0.7)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="324" y="68" width="16" height="24" rx="2" fill="rgba(166,118,63,0.7)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+
+            <!-- Wardrobe (right wall) -->
+            <rect x="468" y="34" width="76" height="120" rx="2" fill="rgba(139,94,131,0.72)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <line x1="506" y1="34" x2="506" y2="154" stroke="rgba(27,42,65,0.2)" stroke-width="1"/>
+            <text x="482" y="100" text-anchor="middle" font-family="Inter" font-size="7" font-weight="600" fill="#FAF8F2" transform="rotate(-90,482,100)">PAX Wardrobe</text>
+            <text x="520" y="100" text-anchor="middle" font-family="Inter" font-size="7" font-weight="600" fill="#FAF8F2" transform="rotate(-90,520,100)">PAX Wardrobe</text>
+
+            <!-- Desk -->
+            <rect x="356" y="34" width="100" height="44" rx="2" fill="rgba(92,122,107,0.72)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <text x="406" y="60" text-anchor="middle" font-family="Inter" font-size="7.5" font-weight="600" fill="#FAF8F2">BEKANT Desk</text>
+
+            <!-- ── KITCHEN/DINING (bottom-right of divider) ── -->
+            <rect x="220" y="168" width="120" height="168" fill="rgba(166,118,63,0.09)"/>
+            <text x="280" y="188" text-anchor="middle" font-family="Inter" font-size="10" font-weight="700" fill="#3D4F66">Kitchen</text>
+            <text x="280" y="201" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8B8378">3.75 × 5.3m</text>
+
+            <!-- Kitchen counter L-shape -->
+            <rect x="228" y="210" width="104" height="18" rx="2" fill="rgba(107,98,89,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="314" y="210" width="18" height="90" rx="2" fill="rgba(107,98,89,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <text x="280" y="221" text-anchor="middle" font-family="Inter" font-size="6.5" fill="#FAF8F2">Counter</text>
+
+            <!-- ── DINING AREA (bottom-right) ── -->
+            <rect x="340" y="168" width="212" height="168" fill="rgba(92,122,107,0.07)"/>
+            <text x="446" y="188" text-anchor="middle" font-family="Inter" font-size="10" font-weight="700" fill="#3D4F66">Dining</text>
+            <text x="446" y="201" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#8B8378">6.6 × 5.3m</text>
+
+            <!-- Dining table -->
+            <rect x="380" y="220" width="112" height="70" rx="3" fill="rgba(92,122,107,0.78)" stroke="rgba(27,42,65,0.35)" stroke-width="1.2"/>
+            <text x="436" y="258" text-anchor="middle" font-family="Inter" font-size="8" font-weight="600" fill="#FAF8F2">LISABO</text>
+            <text x="436" y="270" text-anchor="middle" font-family="Inter" font-size="7" fill="rgba(250,248,242,0.8)">Dining Table</text>
+            <!-- Chairs -->
+            <rect x="392" y="206" width="24" height="12" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="428" y="206" width="24" height="12" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="392" y="292" width="24" height="12" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="428" y="292" width="24" height="12" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="366" y="228" width="12" height="24" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="366" y="258" width="12" height="24" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="494" y="228" width="12" height="24" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+            <rect x="494" y="258" width="12" height="24" rx="2" fill="rgba(92,122,107,0.65)" stroke="rgba(27,42,65,0.3)" stroke-width="1"/>
+
+            <!-- ── SCALE RULER ── -->
+            <line x1="490" y1="338" x2="522" y2="338" stroke="#1B2A41" stroke-width="2"/>
+            <line x1="490" y1="332" x2="490" y2="344" stroke="#1B2A41" stroke-width="2"/>
+            <line x1="522" y1="332" x2="522" y2="344" stroke="#1B2A41" stroke-width="2"/>
+            <text x="506" y="328" text-anchor="middle" font-family="JetBrains Mono" font-size="8.5" fill="#1B2A41">1 m</text>
+          </svg>
+
+          <!-- Inspector panel mock -->
+          <div class="inspector-mock">
+            <div class="insp-title">Furniture</div>
+            <div class="insp-field">
+              <div class="insp-label">NAME</div>
+              <div class="insp-value">EKTORP 3-Seat Sofa</div>
+            </div>
+            <div class="insp-field">
+              <div class="insp-label">DIMENSIONS</div>
+              <div class="insp-value insp-mono">218 × 88 cm</div>
+            </div>
+            <div class="insp-field">
+              <div class="insp-label">BRAND</div>
+              <div class="insp-value">IKEA</div>
+            </div>
+            <div class="insp-field">
+              <div class="insp-label">PRICE</div>
+              <div class="insp-value insp-price">$799</div>
+            </div>
+            <div class="insp-colors">
+              <div class="insp-color" style="background:#C9622A"></div>
+              <div class="insp-color" style="background:#5C7A6B"></div>
+              <div class="insp-color" style="background:#4A6FA5"></div>
+              <div class="insp-color" style="background:#A6763F"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY PLAN/SCALE -->
+<section class="why-section">
+  <div class="why-inner">
+    <div class="why-text-col">
+      <div class="section-eyebrow">Built for the 90% use case</div>
+      <h2 class="why-headline">Sometimes you just need something simple.</h2>
+      <p class="why-body">You don't need a 3D visualisation. You're not an interior designer. You already have your floor plan — maybe it's a PDF from your estate agent, a photo you took, or just a rough sketch. You just need to know: <em>will this sofa actually fit?</em> What will the whole thing cost? Can I send this to my partner so we're on the same page before we start buying?</p>
+      <p class="why-body">Professional tools like SketchUp or AutoCAD are powerful but take days to learn. Apps like IKEA's planner are locked to one brand. Generic drawing tools don't understand furniture or scale.</p>
+      <p class="why-body">Plan/Scale is the gap between those extremes — a focused tool that does one thing well. Upload your floor plan image, use the built-in two-point calibration tool to set real-world scale in seconds, draw your rooms, browse a catalogue of real furniture filtered to your region, drag pieces into position at their actual dimensions, and see your running cost total update as you go. When you're done, export a room-by-room PDF or copy a share link. That's it.</p>
+    </div>
+    <div class="why-pills-col">
+      <div class="why-pill">
+        <span class="why-pill-icon">✕</span>
+        <span>No 3D. No steep learning curve.</span>
+      </div>
+      <div class="why-pill">
+        <span class="why-pill-icon">✕</span>
+        <span>No account required.</span>
+      </div>
+      <div class="why-pill">
+        <span class="why-pill-icon">✕</span>
+        <span>Not locked to one furniture brand.</span>
+      </div>
+      <div class="why-pill why-pill-good">
+        <span class="why-pill-icon-good">✓</span>
+        <span>Real dimensions. Real products. Real prices.</span>
+      </div>
+      <div class="why-pill why-pill-good">
+        <span class="why-pill-icon-good">✓</span>
+        <span>Works from any floor plan image.</span>
+      </div>
+      <div class="why-pill why-pill-good">
+        <span class="why-pill-icon-good">✓</span>
+        <span>Done in under 30 minutes.</span>
+      </div>
+      <div class="why-pill why-pill-good">
+        <span class="why-pill-icon-good">✓</span>
+        <span>Add any custom piece by size — not just catalogue items.</span>
+      </div>
+      <a href="/app" class="btn-primary-large" style="margin-top: 8px; display: inline-block;">Try it now →</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="steps-section">
+  <div class="steps-inner">
+    <div class="steps-header">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="steps-title">Six steps from blank canvas<br>to checkout.</h2>
+    </div>
+    <div class="steps-grid">
+
+      <div class="step">
+        <div class="step-number">01</div>
+        <!--
+          SCREENSHOT — Step 01: Upload & Calibrate
+          Stage: floor plan image loaded, two-point calibration line visible on canvas,
+                 Set Scale modal open in the right rail showing the distance input.
+          Crop: canvas area + right rail. Size: ~1400×900 then crop.
+          Save as: screenshots/step-01-calibrate.png
+        -->
+        <div class="step-screenshot">
+          <img src="screenshots/step-01-calibrate.png" alt="Setting real-world scale with the two-point calibration tool" loading="lazy">
+          <div class="step-placeholder">
+            <div class="step-placeholder-icon">⌖</div>
+            <div class="step-placeholder-text">screenshots/step-01-calibrate.png</div>
+          </div>
+        </div>
+        <h3 class="step-title">Upload your floor plan</h3>
+        <p class="step-desc">Drop in any image of your floor plan — a PDF scan, estate agent drawing, or phone photo. Use the two-point calibration tool to click a known distance on screen (e.g. a wall you know is 4m) and the app sets the real-world scale instantly.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">02</div>
+        <!--
+          SCREENSHOT — Step 02: Draw Rooms
+          Stage: one completed room (green fill + visible vertex handles), a second room
+                 actively mid-draw (dashed outline, cursor at last corner being placed).
+                 "Draw Room" toolbar button should be visually active.
+          Save as: screenshots/step-02-draw-rooms.png
+        -->
+        <div class="step-screenshot">
+          <img src="screenshots/step-02-draw-rooms.png" alt="Drawing room polygons on the canvas" loading="lazy">
+          <div class="step-placeholder">
+            <div class="step-placeholder-icon">⬡</div>
+            <div class="step-placeholder-text">screenshots/step-02-draw-rooms.png</div>
+          </div>
+        </div>
+        <h3 class="step-title">Draw your rooms</h3>
+        <p class="step-desc">Click and drag directly on the canvas to draw each room at real-world size. Rooms can be any shape — drag corner handles to create L-shapes, bay windows, or alcoves. Each room shows its name and live area in m².</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">03</div>
+        <!--
+          SCREENSHOT — Step 03: Browse & Place Furniture
+          Stage: furniture catalogue modal open (showing product cards with images, prices,
+                 brand filters at top). One item mid-drag — ghost/translucent version of the
+                 piece visible on the canvas behind the modal.
+          Save as: screenshots/step-03-catalogue.png
+        -->
+        <div class="step-screenshot">
+          <img src="screenshots/step-03-catalogue.png" alt="Browsing the furniture catalogue and placing items on the canvas" loading="lazy">
+          <div class="step-placeholder">
+            <div class="step-placeholder-icon">⊞</div>
+            <div class="step-placeholder-text">screenshots/step-03-catalogue.png</div>
+          </div>
+        </div>
+        <h3 class="step-title">Browse & place furniture</h3>
+        <p class="step-desc">Open the furniture catalogue to browse real products from IKEA, Muuto, HAY, West Elm, BoConcept, and more — filtered by your region and price range. Add items to your plan and drag them into position at their exact physical dimensions. Don't see what you need? Type in any custom piece by name and size — a sofa you already own, a built-in unit, anything.</p>
+        <p class="step-desc step-disclaimer"><span class="disclaimer-label">⚠ Note on dimensions</span> Catalogue sizes are sourced from retailer data and are a close guide, not a guarantee. Always confirm exact dimensions on the product page before purchasing. Once added to your plan, you can edit any item's size manually to match the spec sheet.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">04</div>
+        <!--
+          SCREENSHOT — Step 04: Save & Share
+          Stage: the Share modal open, showing the compressed URL in the copy field
+                 (ideally with a "Copied!" toast visible), and the Download .json option below.
+                 The autosave indicator should be visible somewhere ("● Saved").
+          Save as: screenshots/step-04-share.png
+        -->
+        <div class="step-screenshot">
+          <img src="screenshots/step-04-share.png" alt="Sharing a plan via URL or downloading a project file" loading="lazy">
+          <div class="step-placeholder">
+            <div class="step-placeholder-icon">⎘</div>
+            <div class="step-placeholder-text">screenshots/step-04-share.png</div>
+          </div>
+        </div>
+        <h3 class="step-title">Save or share your plan</h3>
+        <p class="step-desc">Your plan saves automatically to your browser as you work — refresh the page and it's still there. For longer-term storage, download a <strong>.json</strong> project file. Or hit Share to generate a link that encodes your entire plan in the URL — send it to anyone and they can open it instantly, no account needed.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">05</div>
+        <!--
+          SCREENSHOT — Step 05: Export PDF
+          Stage: the exported PDF open in a browser/preview window, showing the per-room
+                 page with the floor plan sketch, furniture list, and cost total visible.
+                 Alternatively: the PDF export modal/button in the app before clicking.
+          Save as: screenshots/step-05-pdf.png
+        -->
+        <div class="step-screenshot">
+          <img src="screenshots/step-05-pdf.png" alt="Exporting a per-room PDF with furniture list and cost breakdown" loading="lazy">
+          <div class="step-placeholder">
+            <div class="step-placeholder-icon">⎙</div>
+            <div class="step-placeholder-text">screenshots/step-05-pdf.png</div>
+          </div>
+        </div>
+        <h3 class="step-title">Export a PDF</h3>
+        <p class="step-desc">Export your plan as a PDF — the full floor plan, or one focused page per room with its furniture list and cost breakdown. A ready-made reference for when you head to the shops or share it with a partner or flatmate.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">06</div>
+        <!--
+          SCREENSHOT — Step 06: Click Through & Buy
+          Stage: a furniture item selected on the canvas, inspector panel open in the right
+                 rail showing name / dimensions / price / brand, and the "View Product →"
+                 CTA button clearly visible at the bottom of the inspector.
+          Save as: screenshots/step-06-buy.png
+        -->
+        <div class="step-screenshot">
+          <img src="screenshots/step-06-buy.png" alt="Inspector panel showing product details and the View Product link" loading="lazy">
+          <div class="step-placeholder">
+            <div class="step-placeholder-icon">↗</div>
+            <div class="step-placeholder-text">screenshots/step-06-buy.png</div>
+          </div>
+        </div>
+        <h3 class="step-title">Click through and buy</h3>
+        <p class="step-desc">Every catalogue item links directly to the product page on the retailer's website. Click through, add to cart, and buy — knowing it fits, knowing the total, and knowing you're done in one session.</p>
+      </div>
+
+    </div></div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<section class="features-section">
+  <div class="features-inner">
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 7V11L14 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <div class="feature-title">Under 30 minutes</div>
+        <div class="feature-desc">From blank canvas to a shareable plan with costs.</div>
+      </div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="3" y="3" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M3 8H19" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 3V8" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <div class="feature-title">Real dimensions</div>
+        <div class="feature-desc">Every item placed at its actual physical size.</div>
+      </div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M11 2L13.5 8.5H20L14.5 12.5L16.5 19L11 15L5.5 19L7.5 12.5L2 8.5H8.5L11 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <div class="feature-title">Real furniture catalogue</div>
+        <div class="feature-desc">IKEA, Muuto, HAY, West Elm, BoConcept and more.</div>
+      </div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M12 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M12 2v6h6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <div class="feature-title">PDF export & share links</div>
+        <div class="feature-desc">Per-room PDFs with cost breakdowns. One-click sharing.</div>
+      </div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M4 13V17a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M11 3v10m-3-3l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <div class="feature-title">Auto-saved locally</div>
+        <div class="feature-desc">Your work saves to your browser automatically. Refresh without fear.</div>
+      </div>
+    </div>
+    <div class="feature-divider"></div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="2" y="2" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M7 11l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <div class="feature-title">Free, always</div>
+        <div class="feature-desc">No account. No subscription. No catch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AFFILIATE NOTICE -->
+<section class="notice-section">
+  <div class="notice-inner">
+    <div class="notice-icon">ℹ</div>
+    <p class="notice-text">Plan/Scale is free to use. When you click through to purchase a product from our furniture catalogue, we may earn a small affiliate commission from the retailer at no extra cost to you. This helps keep the tool free. We only list products we'd genuinely recommend based on real dimensions and availability.</p>
+  </div>
+  <div class="notice-inner notice-inner-warning">
+    <div class="notice-icon notice-icon-warning">⚠</div>
+    <p class="notice-text"><strong>Catalogue dimensions are a guide, not a guarantee.</strong> Sizes are sourced from retailer data and are intended to help you plan — not replace a measuring tape. Always verify exact dimensions on the retailer's product page before purchasing. If a size looks wrong, you can edit it directly in the app: select any placed item and update its dimensions in the inspector panel.</p>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-mono">Ready when you are.</div>
+    <h2 class="cta-headline">Stop guessing.<br>Start planning.</h2>
+    <a href="/app" class="btn-primary-large">Open Plan/Scale →</a>
+    <p class="cta-sub">Works in Chrome, Firefox, and Edge. No install required.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="brand brand-footer">
+      <svg width="16" height="16" viewBox="0 0 22 22" fill="none">
+        <path d="M2 11L11 3L20 11V19H2V11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M8 19V12H14V19" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">PLAN<span class="brand-slash">/</span>SCALE</span>
+    </div>
+    <div class="footer-links">
+      <a href="/app">Open App</a>
+      <span>·</span>
+      <span class="footer-note">Affiliate disclosure: we may earn commissions on product purchases.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="landing.js"></script>
+</body>
+</html>

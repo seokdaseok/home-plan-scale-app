@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan/Scale — Floor Plan Designer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B2A41'/><path d='M6 17L16 8L26 17V25H6V17Z' fill='none' stroke='%23FAF8F2' stroke-width='2' stroke-linejoin='round'/><path d='M13 25V19H19V25' fill='none' stroke='%23C9622A' stroke-width='2' stroke-linejoin='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- TOP BAR -->
+  <header id="topbar">
+    <div class="brand">
+      <svg class="brand-mark" width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M2 11L11 3L20 11V19H2V11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M8 19V12H14V19" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">PLAN<span class="brand-accent">/</span>SCALE</span>
+    </div>
+
+    <div class="topbar-divider"></div>
+
+    <input type="text" id="project-name" placeholder="Untitled Project" maxlength="60">
+    <span id="autosave-indicator" class="autosave-indicator">Auto-saved</span>
+
+    <div class="topbar-divider"></div>
+
+    <div class="project-controls">
+      <button class="btn btn-ghost" id="btn-new-project" title="New project">New</button>
+      <button class="btn btn-ghost" id="btn-save-project" title="Save project file (.plan.json)">Save File</button>
+      <label class="btn btn-ghost" title="Load project file">
+        Load File
+        <input type="file" id="input-load-project" accept=".json" hidden>
+      </label>
+      <label class="btn btn-ghost" title="Upload a floor plan image to trace">
+        Upload Floor Plan
+        <input type="file" id="input-upload-image" accept="image/*" hidden>
+      </label>
+    </div>
+
+    <button class="btn btn-browse" id="btn-browse-furniture" title="Browse real furniture from brands">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
+        <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+        <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+        <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+        <rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+      </svg>
+      Browse Furniture
+    </button>
+
+    <div class="topbar-divider"></div>
+    <select id="unit-select" title="Display units">
+      <option value="m">m</option>
+      <option value="ft">ft</option>
+    </select>
+
+    <div class="topbar-spacer"></div>
+
+    <div class="scale-readout" id="scale-readout">
+      <span class="scale-label">SCALE</span>
+      <span class="scale-value" id="scale-value">not set</span>
+      <button class="btn btn-tiny" id="btn-set-scale">Set Scale</button>
+    </div>
+
+    <button class="btn btn-share" id="btn-share" title="Copy a shareable link to this plan">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0">
+        <circle cx="10.5" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="10.5" cy="10.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="2.5" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="3.9" y1="5.7" x2="9.1" y2="3.3" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="3.9" y1="7.3" x2="9.1" y2="9.7" stroke="currentColor" stroke-width="1.4"/>
+      </svg>
+      Share
+    </button>
+    <button class="btn btn-primary" id="btn-export-pdf">Export PDF</button>
+  </header>
+
+  <div id="workspace">
+
+    <!-- LEFT RAIL -->
+    <aside id="left-rail">
+
+      <section class="rail-section">
+        <div class="rail-header">
+          <h2>Rooms</h2>
+          <button class="btn btn-icon" id="btn-add-room" title="Add room">+</button>
+        </div>
+        <div class="hint" id="room-hint">Draw rooms directly on the canvas, or add one below and resize it.</div>
+        <ul id="room-list" class="item-list"></ul>
+      </section>
+
+      <section class="rail-section">
+        <div class="rail-header">
+          <h2>Furniture Catalog</h2>
+        </div>
+        <div class="furniture-form">
+          <input type="text" id="fn-name" placeholder="Item name (e.g. Bed)" maxlength="28">
+          <select id="fn-shape">
+            <option value="rect">Rectangle</option>
+            <option value="circle">Circle</option>
+            <option value="triangle">Triangle</option>
+            <option value="lshape">L-Shape</option>
+          </select>
+          <div class="furniture-form-row" id="fn-dims-row">
+            <input type="number" id="fn-width" placeholder="W (cm)" step="1" min="0.1">
+            <span class="x-sep">×</span>
+            <input type="number" id="fn-length" placeholder="L (cm)" step="1" min="0.1">
+          </div>
+          <div class="furniture-form-row" id="fn-dims-row-circle" style="display:none">
+            <input type="number" id="fn-diameter" placeholder="Diameter (cm)" step="1" min="0.1">
+          </div>
+          <div class="furniture-form-row" id="fn-notch-row" style="display:none">
+            <input type="number" id="fn-notch-w" placeholder="Notch W (cm)" step="1" min="0.1">
+            <span class="x-sep">×</span>
+            <input type="number" id="fn-notch-h" placeholder="Notch H (cm)" step="1" min="0.1">
+          </div>
+          <div class="hint" id="fn-notch-hint" style="display:none; margin-top:-4px; margin-bottom:6px;">W × L is the full bounding box. Notch is the corner cut out of the top-right.</div>
+          <div class="furniture-form-row">
+            <div id="fn-color-swatches" class="fn-color-swatches"></div>
+            <input type="hidden" id="fn-color" value="#C9622A">
+            <button class="btn btn-secondary" id="btn-add-furniture">Add to Catalog</button>
+          </div>
+        </div>
+        <ul id="furniture-catalog-list" class="item-list catalog"></ul>
+      </section>
+
+    </aside>
+
+    <!-- CANVAS -->
+    <main id="canvas-wrap">
+      <div id="canvas-toolbar">
+        <button class="tool-btn active" id="tool-select" data-tool="select" title="Select / Move (V)">Select</button>
+        <button class="tool-btn" id="tool-room" data-tool="room" title="Draw room (R)">Draw Room</button>
+        <span class="toolbar-sep"></span>
+        <button class="tool-btn" id="btn-rotate" title="Rotate selected 90° (Q)">Rotate 90°</button>
+        <button class="tool-btn" id="btn-duplicate" title="Duplicate selected (D)">Duplicate</button>
+        <button class="tool-btn danger" id="btn-delete" title="Delete selected (Del)">Delete</button>
+        <span class="toolbar-sep"></span>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-grid" checked>
+          <span>Grid</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-snap" checked>
+          <span>Snap (0.1m)</span>
+        </label>
+        <label class="toggle" id="toggle-bg-wrap" style="display:none">
+          <input type="checkbox" id="toggle-bg" checked>
+          <span>Show traced image</span>
+        </label>
+        <div class="zoom-controls">
+          <button class="tool-btn" id="zoom-out">−</button>
+          <span id="zoom-level">100%</span>
+          <button class="tool-btn" id="zoom-in">+</button>
+        </div>
+      </div>
+
+      <div id="canvas-scroll">
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <!-- Focus mode banner -->
+      <div id="focus-mode-bar">
+        <span id="focus-mode-label">Focusing: —</span>
+        <button id="btn-exit-focus">✕ Exit Focus</button>
+      </div>
+
+      <div id="coord-readout">
+        <span id="coord-text">x: 0.00m&nbsp;&nbsp;y: 0.00m</span>
+      </div>
+    </main>
+
+    <!-- RIGHT RAIL: Inspector / Cost Summary / Room View -->
+    <aside id="right-rail">
+
+      <div class="right-rail-tabs">
+        <button class="right-tab active" data-tab="inspector">Inspector</button>
+        <button class="right-tab" data-tab="costs">Costs</button>
+        <button class="right-tab" data-tab="rooms">Rooms</button>
+      </div>
+
+      <!-- Inspector tab -->
+      <div class="right-tab-panel active" id="right-panel-inspector">
+        <div id="inspector-empty" class="hint" style="margin-top:10px;">Select a room or furniture item on the canvas to edit its properties.</div>
+        <div id="inspector-content" style="display:none"></div>
+        <div class="rail-section" id="legend-preview-section" style="margin-top:14px;">
+          <div class="rail-header"><h2>Legend</h2></div>
+          <div id="legend-preview"></div>
+        </div>
+      </div>
+
+      <!-- Cost Summary tab -->
+      <div class="right-tab-panel" id="right-panel-costs">
+        <div id="cost-summary"></div>
+      </div>
+
+      <!-- Room View tab -->
+      <div class="right-tab-panel" id="right-panel-rooms">
+        <div id="room-view-panel"></div>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<!-- MODAL: Set Scale -->
+<div class="modal-overlay" id="modal-scale">
+  <div class="modal">
+    <h3>Set Drawing Scale</h3>
+
+    <!-- Tab strip -->
+    <div class="scale-tabs" id="scale-tabs">
+      <button class="scale-tab active" data-tab="manual">Manual</button>
+      <button class="scale-tab" data-tab="ratio">Ratio</button>
+      <button class="scale-tab" data-tab="points">Two Points</button>
+    </div>
+
+    <!-- Tab: Manual px/m entry -->
+    <div class="scale-tab-panel" id="scale-panel-manual">
+      <p class="modal-text">Enter the number of pixels that represent one meter at 100% zoom. Use this if you know your scan's DPI or have a reference measurement.</p>
+      <div class="modal-row">
+        <label>Pixels per meter:</label>
+        <input type="number" id="manual-px-per-meter" step="1" min="1" placeholder="e.g. 60">
+      </div>
+      <div class="modal-row" style="font-size:11px; color: var(--graphite); font-family: var(--mono);">
+        <span id="manual-scale-preview">—</span>
+      </div>
+    </div>
+
+    <!-- Tab: Ratio entry -->
+    <div class="scale-tab-panel" id="scale-panel-ratio" style="display:none">
+      <p class="modal-text">Enter a drawing scale ratio. At 1:50, one centimeter on screen equals 50 centimeters in the real world.</p>
+      <div class="ratio-input-row">
+        <span class="ratio-prefix">1 :</span>
+        <input type="number" id="ratio-value" step="1" min="1" placeholder="e.g. 50">
+        <select id="ratio-screen-unit">
+          <option value="cm">per screen cm</option>
+          <option value="mm">per screen mm</option>
+          <option value="in">per screen inch</option>
+        </select>
+      </div>
+      <div class="scale-preview-line" id="ratio-scale-preview">—</div>
+    </div>
+
+    <!-- Tab: Two-point calibration (existing flow) -->
+    <div class="scale-tab-panel" id="scale-panel-points" style="display:none">
+      <p class="modal-text">Click two points on the canvas that span a known real-world distance (e.g. the length of a wall), then enter that distance below.</p>
+      <div class="modal-row">
+        <span id="scale-points-status">Step 1: Click the first point on the canvas.</span>
+      </div>
+      <div class="modal-row">
+        <label>Real-world distance:</label>
+        <input type="number" id="modal-scale-distance" step="0.01" min="0.01" placeholder="e.g. 4.0">
+        <select id="modal-scale-unit">
+          <option value="m">meters</option>
+          <option value="ft">feet</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-scale-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-scale-confirm" disabled>Apply Scale</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Browse Real Furniture -->
+<div class="modal-overlay" id="modal-browse">
+  <div class="modal-browse-inner">
+
+    <!-- Header -->
+    <div class="browse-header">
+      <div class="browse-title">
+        <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
+          <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+          <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+          <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+          <rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+        </svg>
+        <span>Browse Real Furniture</span>
+      </div>
+      <div class="browse-header-right">
+        <span class="browse-count" id="browse-count">— items</span>
+        <button class="btn btn-ghost" id="btn-browse-close">✕ Close</button>
+      </div>
+    </div>
+
+    <div class="browse-body">
+
+      <!-- Filter sidebar -->
+      <aside class="browse-filters">
+        <div class="filter-section">
+          <div class="filter-label">Region</div>
+          <select id="filter-region" class="filter-select">
+            <option value="">All Regions</option>
+          </select>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-label">Search</div>
+          <input type="text" id="filter-search" class="filter-input" placeholder="e.g. sofa, bed, IKEA…">
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-label">Category</div>
+          <div id="filter-categories" class="filter-pills"></div>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-label">Brand</div>
+          <div id="filter-brands" class="filter-pills"></div>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-label">Max Price</div>
+          <input type="range" id="filter-price" class="filter-range" min="0" max="5000" value="5000" step="50">
+          <div class="filter-price-readout">Up to <span id="filter-price-label">any price</span></div>
+          <div class="filter-price-note" id="filter-price-note">Prices shown in USD. Select a region to see local currency (approximate).</div>
+        </div>
+
+        <button class="btn btn-ghost btn-full" id="btn-clear-filters" style="margin-top:8px; font-size:11px;">Clear all filters</button>
+      </aside>
+
+      <!-- Results grid -->
+      <div class="browse-results-wrap">
+        <div id="browse-grid" class="browse-grid"></div>
+        <div id="browse-empty" class="browse-empty" style="display:none">
+          <div class="browse-empty-icon">⬜</div>
+          <div class="browse-empty-msg">No items match these filters.</div>
+          <div class="browse-empty-sub">Try a different region, category, or search term.</div>
+        </div>
+        <div id="browse-loading" class="browse-loading">Loading catalog…</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Share Link -->
+<div class="modal-overlay" id="modal-share">
+  <div class="modal">
+    <h3>Share Plan</h3>
+    <p class="modal-text" id="share-modal-desc">Copy this link to share your floor plan. Anyone with it can open and view the full layout.</p>
+    <div class="share-url-row">
+      <input type="text" id="share-url-input" class="share-url-input" readonly>
+      <button class="btn btn-primary" id="btn-copy-url">Copy</button>
+    </div>
+    <div class="share-warning" id="share-warning" style="display:none">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;margin-top:1px">
+        <path d="M6.5 1L12 11H1L6.5 1Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+        <line x1="6.5" y1="5" x2="6.5" y2="8" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="6.5" cy="9.5" r="0.6" fill="currentColor"/>
+      </svg>
+      <span>Your floor plan image isn't included in the link (it's too large). Rooms and furniture are fully shared.</span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-share-close">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PDF Export options -->
+<div class="modal-overlay" id="modal-export">
+  <div class="modal">
+    <h3>Export PDF</h3>
+    <p class="modal-text">Choose what to include in the export.</p>
+
+    <div class="export-options">
+      <label class="export-option">
+        <input type="radio" name="export-mode" value="full" checked>
+        <div class="export-option-body">
+          <div class="export-option-title">Full Plan</div>
+          <div class="export-option-desc">One page — complete floor plan with all rooms, furniture legend, and cost summary.</div>
+        </div>
+      </label>
+      <label class="export-option">
+        <input type="radio" name="export-mode" value="rooms">
+        <div class="export-option-body">
+          <div class="export-option-title">Per Room</div>
+          <div class="export-option-desc">One page per room — zoomed layout with furniture list and cost breakdown for each room.</div>
+        </div>
+      </label>
+      <label class="export-option">
+        <input type="radio" name="export-mode" value="both">
+        <div class="export-option-body">
+          <div class="export-option-title">Both</div>
+          <div class="export-option-desc">Full plan on the first page, then one page per room.</div>
+        </div>
+      </label>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-export-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-export-confirm">Export PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: New project confirm -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal">
+    <h3 id="modal-confirm-title">Start a new project?</h3>
+    <p class="modal-text" id="modal-confirm-text">This will clear the current floor plan, rooms, and furniture. Save your file first if you want to keep it.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-confirm-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-confirm-ok">Continue</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<div id="scale-capture-banner">Click point <span id="capture-point-num">1</span> on the canvas…  (Esc to cancel)</div>
+<script src="app.js"></script>
+</body>
+</html>
